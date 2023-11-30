@@ -11,11 +11,11 @@ while True:
   hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
   
   #define color range (high and low)
-  lower_red = np.array([155,65,57])
-  upper_red = np.array([255,255,180])
+  lower_pink = np.array([140, 50, 50])
+  upper_pink = np.array([180, 255, 255])
 
   #draw frame with only color, black and white
-  mask = cv2.inRange(hsv, lower_red, upper_red)
+  mask = cv2.inRange(hsv, lower_pink, upper_pink)
   res = cv2.bitwise_and(frame,frame, mask= mask)
 
   #find color in original frame
