@@ -12,7 +12,8 @@ PORT = 55555
 pygame.init()
 width, height = 1280, 720
 nickname = "Player"
-screen = pygame.display.set_mode((width, height))
+screen = pygame.display.set_mode((width, height),pygame.FULLSCREEN) #fullscreen
+#not full screen
 pygame.display.set_caption("Fight Flight")
 
 #temp button stuff
@@ -21,7 +22,7 @@ button_color = (0, 128, 255)
 button_text_color = (255, 255, 255)
 button_font = pygame.font.Font(None, 36)
 button_x = (width - button_width) // 2
-button_y = (height // 2) - 10
+button_y = height - 50
 font = pygame.font.Font(None, 36)
 
 #health bars
@@ -43,7 +44,7 @@ vc.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
 rval, frame = vc.read()
 detected = False
 
-#connect to server
+#connect to server #commented out during development
 #client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 #client.connect((HOST, PORT))
 
@@ -136,8 +137,8 @@ while True:
     button_text = button_font.render("Fire!", True, button_text_color)
     text_rect = button_text.get_rect(center=button_rect.center)
     screen.blit(button_text, text_rect)
-    name_text = font.render(str(health), True, button_text_color)
-    screen.blit(name_text,(text_rect.left, text_rect.top - 30))
+    #name_text = font.render(str(health), True, button_text_color)
+    #screen.blit(name_text,(text_rect.left, text_rect.top - 30))
     
     current_health_rect = pygame.Rect(width/2, 10, health * (health_bar_width / 1000), health_bar_height)
     pygame.draw.rect(screen, (255,0,0), current_health_rect)
@@ -151,8 +152,8 @@ while True:
     text_rect = enemy_health_text.get_rect(center=enemy_health_rect.center)
     screen.blit(enemy_health_text, text_rect)
 
-    crosshair = pygame.image.load("crosshair188.png").convert()
-    screen.blit(crosshair, (width/2, height/2))
+    #crosshair = pygame.image.load("crosshair188.png").convert()
+    #screen.blit(crosshair, (width/2, height/2))
 
     rval, frame = vc.read()
     pygame.display.flip()
