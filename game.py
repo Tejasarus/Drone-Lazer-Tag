@@ -12,8 +12,9 @@ PORT = 55555
 pygame.init()
 width, height = 1280, 720
 nickname = "Player"
-screen = pygame.display.set_mode((width, height),pygame.FULLSCREEN) #fullscreen
+#screen = pygame.display.set_mode((width, height),pygame.FULLSCREEN) #fullscreen
 #not full screen
+screen = pygame.display.set_mode((width, height))
 pygame.display.set_caption("Fight Flight")
 
 #temp button stuff
@@ -38,7 +39,8 @@ you_lose = False
 you_win = True
 
 #initalize opencv
-vc = cv2.VideoCapture(0,cv2.CAP_DSHOW)
+#vc = cv2.VideoCapture(0,cv2.CAP_DSHOW) #windows
+vc = cv2.VideoCapture(0) #macos
 vc.set(cv2.CAP_PROP_FRAME_WIDTH, width)
 vc.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
 rval, frame = vc.read()
@@ -123,6 +125,8 @@ while True:
             if event.type == pygame.QUIT:
                 pygame.quit()
                 #sys.exit()
+            elif event.type == pygame.KEYDOWN:
+                pygame.quit()
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 # Check if the mouse click is within the button rectangle
                 if button_rect.collidepoint(event.pos):
@@ -159,4 +163,5 @@ while True:
     pygame.display.flip()
     #press q to quit program
     if cv2.waitKey(1) & 0xFF == ord('q'):
+        pygame.quit()
         break
