@@ -5,7 +5,8 @@ import cv2
 import numpy as np
 
 # Get the host IP address, PORT address
-HOST = socket.gethostbyname(socket.gethostname())
+#HOST = socket.gethostbyname(socket.gethostname())
+HOST = '169.254.195.92'
 PORT = 55555
 
 #initalize pygame window
@@ -36,7 +37,7 @@ enemy_health_bar_rect = pygame.Rect(50, height - enemy_health_bar_width - 20, en
 
 #misc game variables
 you_lose = False
-you_win = True
+you_win = False
 
 #initalize opencv
 #vc = cv2.VideoCapture(0,cv2.CAP_DSHOW) #windows
@@ -58,7 +59,7 @@ def receive():
             message = client.recv(1024).decode('ascii')
             if message == 'NICK':
                 client.send(nickname.encode('ascii'))
-            elif message == '2':
+            elif message == '1':
                 health = health - 1
             elif message == '2M':
                 health = health - 25
@@ -69,6 +70,9 @@ def receive():
             else:
                 print(message)
                 # You can handle displaying the message in the Pygame window here
+            if health <= 0:
+                you_lose = True
+
         except:
             print("An error occurred!")
             client.close()
@@ -76,7 +80,7 @@ def receive():
 
 def write():
     message = '1'
-    client.send(message.encode('ascii'))
+    #client.send(message.encode('ascii'))
 
 receive_thread = threading.Thread(target=receive)
 receive_thread.start()
@@ -126,7 +130,14 @@ while True:
                 pygame.quit()
                 #sys.exit()
             elif event.type == pygame.KEYDOWN:
-                pygame.quit()
+                if event.key == pygame.K_q:
+                    pygame.quit()
+                if event.key == pygame.K_SPACE:
+                    if you_lose or you_win:
+                        you_lose = False
+                        you_win = False
+                        health = 100
+                        enemy_health = 100
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 # Check if the mouse click is within the button rectangle
                 if button_rect.collidepoint(event.pos):
@@ -134,7 +145,9 @@ while True:
                         #print(health - 1)
                         message = '2'
                         #client.send(message.encode('ascii'))
-                        enemy_health = enemy_health - 1
+                        enemy_health = enemy_health - 10
+                        if enemy_health <= 0:
+                            you_win = True
     screen.blit(surf, (0,0))
 
     button_rect = pygame.draw.rect(screen, button_color, (button_x, button_y, button_width, button_height))
@@ -158,6 +171,17 @@ while True:
 
     #crosshair = pygame.image.load("crosshair188.png").convert()
     #screen.blit(crosshair, (width/2, height/2))
+
+    ##game over screen##
+    if you_lose or you_win:
+        if you_win:
+            img = pygame.image.load("images/you_win.png").convert()
+            img = pygame.transform.scale(img, (width,height))
+            screen.blit(img,(0,0))
+        elif you_lose:
+            img = pygame.image.load("images/game_over.png").convert()
+            img = pygame.transform.scale(img, (width,height))
+            screen.blit(img,(0,0))
 
     rval, frame = vc.read()
     pygame.display.flip()
