@@ -65,10 +65,10 @@ def receive():
                 client.send(nickname.encode('ascii'))
             elif message == '1':
                 if p1:    
-                    health = health - 1
+                    health = health - 10
             elif message == '2':
                 if not p1:
-                    health = health - 1    
+                    health = health - 10   
             else:
                 print(message)
                 # You can handle displaying the message in the Pygame window here
@@ -96,6 +96,10 @@ while True:
         img = pygame.image.load("images/player_select.png").convert()
         img = pygame.transform.scale(img, (width,height))
         screen.blit(img,(0,0))
+    
+    #health checker
+    if health <= 0:
+        you_lose = True
 
     #define frame
     hsv = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
