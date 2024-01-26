@@ -6,7 +6,7 @@ import numpy as np
 
 # Get the host IP address, PORT address
 #HOST = socket.gethostbyname(socket.gethostname())
-HOST = '169.254.195.92'
+HOST = '192.168.1.236'
 PORT = 55555
 
 #initalize pygame window
@@ -52,8 +52,8 @@ rval, frame = vc.read()
 detected = False
 
 #connect to server #commented out during development
-#client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-#client.connect((HOST, PORT))
+client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+client.connect((HOST, PORT))
 
 def receive():
     global health
@@ -169,9 +169,11 @@ while True:
                     if detected: 
                         #print(health - 1)
                         if p1:
-                            write('2')
+                            #write('2')
+                            message = '2'
                         else:
-                            write('1')
+                            message = '1'
+                        client.send(message.encode('ascii'))
                         enemy_health = enemy_health - 10
                         if enemy_health <= 0:
                             you_win = True
@@ -214,3 +216,8 @@ while True:
 
     rval, frame = vc.read()
     pygame.display.flip()
+
+    #press q to quit program
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        pygame.quit()
+        break
