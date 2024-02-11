@@ -11,7 +11,7 @@ HOST = socket.gethostbyname(socket.gethostname())
 def find_available_port():
     # Create a socket
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    #server.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 
     # Bind to an available port in the range 49152 to 65535
     for port in range(49152, 65536):
@@ -69,20 +69,20 @@ def receive():
         while True:
             client, address = server.accept()
             print(f"Connected with {str(address)}")
-            print("hello")
+            client.send('Connected to the server!'.encode('ascii'))
             # How the Server Asks for Information (In this case nickname):
             #client.send('NICK'.encode('ascii'))
             #nickname = client.recv(1024).decode('ascii')
             #nicknames.append(nickname)
             clients.append(client)
-
+            print(clients)
             #print(f'Nickname of the client is {nickname}!')
             #broadcast(f'{nickname} joined the game!'.encode('ascii'))
             client.send('Connected to the server!'.encode('ascii'))
             print(len(clients))
             if len(clients) == 2:
                 for client in clients:  # Send 'START' message to all clients
-                    clients[0].send('START'.encode('ascii'))
+                    clients[1].send('START'.encode('ascii'))
             
             # Start a new thread to handle client messages
             thread = threading.Thread(target=handle, args=(client,))
