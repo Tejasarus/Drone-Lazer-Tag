@@ -17,7 +17,7 @@ class Button:
         pygame.draw.rect(win, self.color, (self.x, self.y, self.width, self.height), 0)
         
         if self.text != '':
-            font = pygame.font.SysFont('comicsans', 60)
+            font = pygame.font.SysFont('comicsans', 30)
             text = font.render(self.text, 1, (0, 0, 0))
             win.blit(text, (self.x + (self.width/2 - text.get_width()/2), self.y + (self.height/2 - text.get_height()/2)))
 
@@ -41,3 +41,28 @@ class Text:
         font = pygame.font.SysFont('comicsans', size)
         text = font.render(self.text, 1, (0, 0, 0))
         win.blit(text, (self.x + (self.width/2 - text.get_width()/2), self.y + (self.height/2 - text.get_height()/2)))
+
+def draw_health_bar(health, enemy_health,screen):
+    width, height = 1280, 720
+    health_bar_width, health_bar_height = width - 40, 30
+    health_bar_rect = pygame.Rect(20, height - health_bar_height - 20, 10, 10)
+    enemy_health_bar_width, enemy_health_bar_height = width - 40, 30
+    enemy_health_bar_rect = pygame.Rect(50, height - enemy_health_bar_width - 20, enemy_health_bar_width, enemy_health_bar_height)
+    health_font = pygame.font.SysFont('comicsans', 20)
+
+    current_health_rect = pygame.Rect(10, height - 40, health * (health_bar_width / 500), health_bar_height)
+    pygame.draw.rect(screen, (0,0,255), current_health_rect)
+    health_text = health_font.render(f"You: {round(health)}", True, (255, 255, 255))
+    text_rect = health_text.get_rect(center=current_health_rect.center)
+    screen.blit(health_text, text_rect)
+    
+    enemy_health_rect = pygame.Rect(width/20, 10, enemy_health * (health_bar_width / 100), health_bar_height)
+    pygame.draw.rect(screen, (255,0,0), enemy_health_rect)
+    enemy_health_text = health_font.render(f"Enemy: {round(enemy_health)}", True, (255, 255, 255))
+    text_rect = enemy_health_text.get_rect(center=enemy_health_rect.center)
+    screen.blit(enemy_health_text, text_rect)
+
+    scale_factor = 1.5
+    heart = pygame.image.load("images/ui/tile_heart.png").convert_alpha() 
+    heart = pygame.transform.scale(heart,(heart.get_width() * scale_factor, heart.get_height() * scale_factor))
+    screen.blit(heart,(1,-20))

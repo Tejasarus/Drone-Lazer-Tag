@@ -50,6 +50,7 @@ def handle(client):
             index = clients.index(client)
             clients.remove(client)
             client.close
+            print("removed")
             #nickname = nicknames[index]
             #broadcast(f'{nickname} has left the game!'.encode('ascii'))
             #nicknames.remove(nickname)
@@ -69,21 +70,13 @@ def receive():
         while True:
             client, address = server.accept()
             print(f"Connected with {str(address)}")
-            client.send('Connected to the server!'.encode('ascii'))
             # How the Server Asks for Information (In this case nickname):
             #client.send('NICK'.encode('ascii'))
             #nickname = client.recv(1024).decode('ascii')
             #nicknames.append(nickname)
             clients.append(client)
-            print(clients)
             #print(f'Nickname of the client is {nickname}!')
             #broadcast(f'{nickname} joined the game!'.encode('ascii'))
-            client.send('Connected to the server!'.encode('ascii'))
-            print(len(clients))
-            if len(clients) == 2:
-                for client in clients:  # Send 'START' message to all clients
-                    clients[1].send('START'.encode('ascii'))
-            
             # Start a new thread to handle client messages
             thread = threading.Thread(target=handle, args=(client,))
             thread.start()
