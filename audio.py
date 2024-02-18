@@ -6,7 +6,7 @@ class Music:
 
     def play_on_loop(self):
         pygame.mixer.music.load(self.song)
-        pygame.mixer.music.set_volume(0.5)
+        pygame.mixer.music.set_volume(0)
         pygame.mixer.music.play(-1)
 
     def play(self):

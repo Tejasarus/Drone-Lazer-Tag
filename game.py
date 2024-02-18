@@ -10,15 +10,16 @@ import sys
 sys.path.append('drone types/')
 import Character
 
+
 #pygame initalization
 pygame.init()
 clock = pygame.time.Clock()
 width, height = 1280, 720
 nickname = "Player"
 #fullscreen
-screen = pygame.display.set_mode((width, height),pygame.FULLSCREEN)
+#screen = pygame.display.set_mode((width, height),pygame.FULLSCREEN)
 #not full screen
-#screen = pygame.display.set_mode((width, height),pygame.RESIZABLE)
+screen = pygame.display.set_mode((width, height),pygame.RESIZABLE)
 pygame.display.set_caption("Fight Flight")
 
 #health bars
@@ -37,14 +38,17 @@ foehn_wind = False
 drone_class = "basic"
 
 #menu game variables
-main_menu = True
+main_menu = False
 game_mode_select = False
 player_select = False
 game_start = False
-font = pygame.font.SysFont('comicsans', 36)
+font = pygame.font.SysFont('/images/ui/recharge bd.otf', 36)
+font_menu = pygame.font.Font('images/ui/recharge bd.otf',70)
 you_lose = False
 you_win = False
 waiting = False
+drone_select = True
+drone_desc_activate = [True, False, False, False, False, False, False, False]
 
 #multiplayer lobby menus
 multiplayer_lobby = False
@@ -63,6 +67,7 @@ dam_re = False
 wyver = False
 damage_done = 0
 poison_damage = 10
+
 #character stats and checks
 max_check3 = 0
 max_check2 = 0
@@ -95,6 +100,14 @@ settings_button = ui.Button((0,255,0),(width //2) - 120,height-130,220,70,"setti
 player_1_select = ui.Button((0,255,0),width/7,height - 300,225,225,"Player 1")
 player_2_select = ui.Button((0,255,0),width * (2/3),height - 300,225,225,"Player 2")
 
+drone_one_button = ui.Button((0,255,0),75,175,110,110,"1")
+drone_two_button = ui.Button((0,255,0),75,295,110,110,"2")
+drone_three_button = ui.Button((0,255,0),75,415,110,110,"3")
+drone_four_button = ui.Button((0,255,0),75,535,110,110,"4")
+drone_five_button = ui.Button((0,255,0),215,175,110,110,"5")
+drone_six_button = ui.Button((0,255,0),215,295,110,110,"6")
+drone_seven_button = ui.Button((0,255,0),215,415,110,110,"7")
+drone_eight_button = ui.Button((0,255,0),215,535,110,110,"8")
 #initalize opencv
 #vc = cv2.VideoCapture(0,cv2.CAP_DSHOW) #windows
 vc = cv2.VideoCapture(0) #macos
@@ -104,8 +117,8 @@ rval, frame = vc.read()
 pink_detection = vision.Vision(rval,vc,frame,height,width)
 
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-#client.connect(('192.168.1.10', 49152))
-client.connect(('127.0.0.1', 49152))
+client.connect(('192.168.1.10', 49152))
+#client.connect(('127.0.0.1', 49152))
 
 def receive():
     global health
@@ -235,17 +248,40 @@ while True:
     #main menu
     if main_menu:
         display_menu("images/main_menu.png")
-    
+        scale_factor = 0.6
+        menu_play_button = pygame.image.load("images/ui/Play.png").convert_alpha() 
+        menu_play_button = pygame.transform.scale(menu_play_button,(menu_play_button.get_width() * scale_factor, menu_play_button.get_height() * scale_factor))
+        screen.blit(menu_play_button, (width * (30/100),height- 115))
+
     #gamemode select menu
     if game_mode_select:
         display_menu("images/gamemode_select.png")
 
         #play_button = ui.Button((0,255,0),width/7,height/4,225,350,"play")
-        play_button.draw(screen)
+        #play_button.draw(screen)
         #demo_button = ui.Button((0,255,0),width * (2/3),height/4,225,350,"demo")
-        demo_button.draw(screen)
+        #demo_button.draw(screen)
         #settings_button = ui.Button((0,255,0),(width //2) - 120,height-130,220,70,"settings")
-        settings_button.draw(screen)
+        #settings_button.draw(screen)
+
+    if drone_select:
+        display_menu("images/drone_select_image.png")
+        ui.drone_selection_menu(screen, font_menu, width, height)
+        Character.drone_description(drone_desc_activate, screen, width, height)
+        scale_factor = 0.5
+
+        select_image = pygame.image.load("images/ui/Select.png").convert_alpha()
+        select_image = pygame.transform.scale(select_image,(select_image.get_width() * scale_factor, select_image.get_height() * scale_factor))
+        screen.blit(select_image, (700,500))
+
+        #drone_one_button.draw(screen)
+        #drone_two_button.draw(screen)
+        #drone_three_button.draw(screen)
+        #drone_four_button.draw(screen)
+        #drone_five_button.draw(screen)
+        #drone_six_button.draw(screen)
+        #drone_seven_button.draw(screen)
+        #drone_eight_button.draw(screen)
 
     #player select menu
     if player_select:
@@ -363,16 +399,43 @@ while True:
                 message = 'START 2'
                 client.send(message.encode('ascii'))
                 waiting = True
-                
+        
+        #elif drone_select:
         elif game_mode_select:
             if play_button.isOver(event):
-                player_select = True
+                drone_select = True
                 game_mode_select = False
             if demo_button.isOver(event):
                 game_mode_select = False
                 player_select = True
             if settings_button.isOver(event):
                 print("settings button pressed")
+        
+        elif drone_select:
+            if drone_one_button.isOver(event):
+                drone_desc_activate = [False, False, False, False, False, False, False, False]
+                drone_desc_activate[0] = True
+            elif drone_two_button.isOver(event):
+                drone_desc_activate = [False, False, False, False, False, False, False, False]
+                drone_desc_activate[1] = True
+            elif drone_three_button.isOver(event):
+                drone_desc_activate = [False, False, False, False, False, False, False, False]
+                drone_desc_activate[2] = True
+            elif drone_four_button.isOver(event):
+                drone_desc_activate = [False, False, False, False, False, False, False, False]
+                drone_desc_activate[3] = True
+            elif drone_five_button.isOver(event):
+                drone_desc_activate = [False, False, False, False, False, False, False, False]
+                drone_desc_activate[4] = True
+            elif drone_six_button.isOver(event):
+                drone_desc_activate = [False, False, False, False, False, False, False, False]
+                drone_desc_activate[5] = True
+            elif drone_seven_button.isOver(event):
+                drone_desc_activate = [False, False, False, False, False, False, False, False]
+                drone_desc_activate[6] = True
+            elif drone_eight_button.isOver(event):
+                drone_desc_activate = [False, False, False, False, False, False, False, False]
+                drone_desc_activate[7] = True
         
         elif main_menu:
             main_menu = False

@@ -66,3 +66,85 @@ def draw_health_bar(health, enemy_health,screen):
     heart = pygame.image.load("images/ui/tile_heart.png").convert_alpha() 
     heart = pygame.transform.scale(heart,(heart.get_width() * scale_factor, heart.get_height() * scale_factor))
     screen.blit(heart,(1,-20))
+
+def drone_selection_menu(screen, font_menu, width, height):
+    scale_factor = 2.5
+
+    text = font_menu.render('CHOOSE YOUR FIGHTER', True, (255,255,255))
+    textRect = text.get_rect()
+    textRect.center = (width // 2, 60)
+    screen.blit(text, textRect)
+
+    panel1 = pygame.image.load("images/ui/border.png").convert_alpha()
+    panel1 = pygame.transform.scale(panel1,(panel1.get_width() * scale_factor, panel1.get_height() * scale_factor))
+    screen.blit(panel1, (50,150))
+
+    panel2 = pygame.image.load("images/ui/border.png").convert_alpha()
+    panel2 = pygame.transform.scale(panel2,(panel2.get_width() * scale_factor, panel2.get_height() * scale_factor))
+    screen.blit(panel2, (50,270))
+
+    panel3 = pygame.image.load("images/ui/border.png").convert_alpha()
+    panel3 = pygame.transform.scale(panel3,(panel3.get_width() * scale_factor, panel3.get_height() * scale_factor))
+    screen.blit(panel3, (50,390))
+
+    panel4 = pygame.image.load("images/ui/border.png").convert_alpha()
+    panel4 = pygame.transform.scale(panel4,(panel4.get_width() * scale_factor, panel4.get_height() * scale_factor))
+    screen.blit(panel4, (50,510))
+
+    panel5 = pygame.image.load("images/ui/border.png").convert_alpha()
+    panel5 = pygame.transform.scale(panel5,(panel5.get_width() * scale_factor, panel5.get_height() * scale_factor))
+    screen.blit(panel5, (190,150))
+
+    panel6 = pygame.image.load("images/ui/border.png").convert_alpha()
+    panel6 = pygame.transform.scale(panel6,(panel6.get_width() * scale_factor, panel6.get_height() * scale_factor))
+    screen.blit(panel6, (190,270))
+
+    panel7 = pygame.image.load("images/ui/border.png").convert_alpha()
+    panel7 = pygame.transform.scale(panel7,(panel7.get_width() * scale_factor, panel7.get_height() * scale_factor))
+    screen.blit(panel7, (190,390))
+
+    panel8 = pygame.image.load("images/ui/border.png").convert_alpha()
+    panel8 = pygame.transform.scale(panel8,(panel8.get_width() * scale_factor, panel8.get_height() * scale_factor))
+    screen.blit(panel8, (190,510))
+    
+    scale_factor = 5
+    desc_panel = pygame.image.load("images/ui/desc_panel.png").convert_alpha()
+    desc_panel = pygame.transform.scale(desc_panel,(desc_panel.get_width() * scale_factor * 1.5, desc_panel.get_height() * scale_factor))
+    screen.blit(desc_panel, (500,150))
+
+    scale_factor = 2
+    drone1 = pygame.image.load("images/drones/enemy_A.png").convert_alpha()
+    drone1 = pygame.transform.scale(drone1,(drone1.get_width() * scale_factor, drone1.get_height() * scale_factor))
+    screen.blit(drone1, (65,160))
+
+    drone2 = pygame.image.load("images/drones/enemy_B.png").convert_alpha()
+    drone2 = pygame.transform.scale(drone2,(drone2.get_width() * scale_factor, drone2.get_height() * scale_factor))
+    screen.blit(drone2, (65,285))
+
+    scale_factor = 1.6
+    drone3 = pygame.image.load("images/drones/enemy_C.png").convert_alpha()
+    drone3 = pygame.transform.scale(drone3,(drone3.get_width() * scale_factor, drone3.get_height() * scale_factor))
+    screen.blit(drone3, (79,425))
+
+    scale_factor = 2
+    drone4 = pygame.image.load("images/drones/enemy_D.png").convert_alpha()
+    drone4 = pygame.transform.scale(drone4,(drone4.get_width() * scale_factor, drone4.get_height() * scale_factor))
+    screen.blit(drone4, (67,527))
+
+    drone5 = pygame.image.load("images/drones/enemy_E.png").convert_alpha()
+    drone5 = pygame.transform.scale(drone5,(drone5.get_width() * scale_factor, drone5.get_height() * scale_factor))
+    screen.blit(drone5, (205,165))
+
+    drone6 = pygame.image.load("images/drones/satellite_D.png").convert_alpha()
+    drone6 = pygame.transform.scale(drone6,(drone6.get_width() * scale_factor, drone6.get_height() * scale_factor))
+    screen.blit(drone6, (205,285))
+
+    drone7 = pygame.image.load("images/drones/ship_sidesA.png").convert_alpha()
+    drone7 = pygame.transform.scale(drone7,(drone7.get_width() * scale_factor, drone7.get_height() * scale_factor))
+    screen.blit(drone7, (205,400))
+
+    drone8 = pygame.image.load("images/drones/ship_sidesB.png").convert_alpha()
+    drone8 = pygame.transform.scale(drone8,(drone8.get_width() * scale_factor, drone8.get_height() * scale_factor))
+    screen.blit(drone8, (205,525))
+
+
