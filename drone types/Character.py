@@ -290,3 +290,164 @@ class Character:
             damage_reduction = 1.5
             effect_time = 20000
             return health, attack_cooldown_3, attack_cooldown_2, attack_cooldown_1, damage_reduction, effect_time
+
+
+def drone_description(drone_desc_activate, screen, width, height):
+    #font = pygame.font.SysFont('/images/ui/recharge bd.otf', 36)
+    font = pygame.font.Font('images/ui/neuropol.otf', 20)
+    font_header = pygame.font.Font('images/ui/recharge bd.otf', 55)
+    scale_factor = 1.15
+    panel = pygame.image.load("images/ui/glassPanel.png").convert_alpha()
+    panel = pygame.transform.scale(panel,(panel.get_width() * scale_factor, panel.get_height() * scale_factor))
+    
+    if drone_desc_activate[0]:
+        screen.blit(panel, (75,175))
+        
+        name = font_header.render('KING RAPTOR', True, (255,255,255))
+        nameRect = name.get_rect()
+        nameRect.center = (900, 200)
+        screen.blit(name, nameRect)
+
+        primary1 = font.render("Primary: " + str(king1[0]) + " damage",True,(255,255,255))
+        primary1Rect = primary1.get_rect()
+        primary1Rect.center = (675,300)
+        screen.blit(primary1, primary1Rect)
+
+        primary1_cooldown = font.render("Cooldown: " + str(king1[1]//1000) + " seconds", True, (0,255,0))
+        primary1_cooldownRect = primary1_cooldown.get_rect()
+        primary1_cooldownRect.center = (960,300)
+        screen.blit(primary1_cooldown, primary1_cooldownRect)
+
+        secondary1 = font.render("Secondary: " + str(king2[0]) + " damage",True,(255,255,255))
+        secondary1Rect = secondary1.get_rect()
+        secondary1Rect.center = (705,350)
+        screen.blit(secondary1, secondary1Rect)
+
+        primary1_cooldown = font.render("Cooldown: " + str(king2[1]//1000) + " seconds", True, (0,255,0))
+        primary1_cooldownRect = primary1_cooldown.get_rect()
+        primary1_cooldownRect.center = (1020,350)
+        screen.blit(primary1_cooldown, primary1_cooldownRect)
+
+        ability = font.render("Ability: Disables opponents attacks for 10 seconds", True, (255,255,255))
+        ability_Rect = ability.get_rect()
+        ability_Rect.center = (875,400)
+        screen.blit(ability,ability_Rect)
+        primary1_cooldown = font.render("Cooldown: " + str(king3[1]//1000) + " seconds", True, (0,255,0))
+        primary1_cooldownRect = primary1_cooldown.get_rect()
+        primary1_cooldownRect.center = (700,430)
+        screen.blit(primary1_cooldown, primary1_cooldownRect)
+    
+    elif drone_desc_activate[1]:
+        screen.blit(panel, (75,295))
+        
+        name = font_header.render('ALPHA AUORA', True, (255,255,255))
+        nameRect = name.get_rect()
+        nameRect.center = (925, 200)
+        screen.blit(name, nameRect)
+
+        primary1 = font.render("Primary: " + str(auora1[0]) + " damage",True,(255,255,255))
+        primary1Rect = primary1.get_rect()
+        primary1Rect.center = (675,300)
+        screen.blit(primary1, primary1Rect)
+
+        primary1_cooldown = font.render("Cooldown: " + str(auora1[1]//1000) + " seconds", True, (0,255,0))
+        primary1_cooldownRect = primary1_cooldown.get_rect()
+        primary1_cooldownRect.center = (960,300)
+        screen.blit(primary1_cooldown, primary1_cooldownRect)
+
+        secondary1 = font.render("Secondary: " + str(auora2[0]) + " damage",True,(255,255,255))
+        secondary1Rect = secondary1.get_rect()
+        secondary1Rect.center = (705,350)
+        screen.blit(secondary1, secondary1Rect)
+
+        primary1_cooldown = font.render("Cooldown: " + str(auora2[1]//1000) + " seconds", True, (0,255,0))
+        primary1_cooldownRect = primary1_cooldown.get_rect()
+        primary1_cooldownRect.center = (1020,350)
+        screen.blit(primary1_cooldown, primary1_cooldownRect)
+
+        ability = font.render("Ability: Restores 20 Health", True, (255,255,255))
+        ability_Rect = ability.get_rect()
+        ability_Rect.center = (720,400)
+        screen.blit(ability,ability_Rect)
+        primary1_cooldown = font.render("Cooldown: " + str(60000//1000) + " seconds", True, (0,255,0))
+        primary1_cooldownRect = primary1_cooldown.get_rect()
+        primary1_cooldownRect.center = (700,430)
+        screen.blit(primary1_cooldown, primary1_cooldownRect)
+    
+    elif drone_desc_activate[2]:
+        screen.blit(panel, (75,415))
+        
+        name = font_header.render('Vindicator', True, (255,255,255))
+        nameRect = name.get_rect()
+        nameRect.center = (925, 200)
+        screen.blit(name, nameRect)
+
+        primary1 = font.render("Primary: " + str(vindicator1[0]) + " damage",True,(255,255,255))
+        primary1Rect = primary1.get_rect()
+        primary1Rect.center = (675,300)
+        screen.blit(primary1, primary1Rect)
+
+        primary1_cooldown = font.render("Cooldown: " + str(vindicator1[1]//1000) + " seconds", True, (0,255,0))
+        primary1_cooldownRect = primary1_cooldown.get_rect()
+        primary1_cooldownRect.center = (960,300)
+        screen.blit(primary1_cooldown, primary1_cooldownRect)
+
+        secondary1 = font.render("Secondary: " + str(vindicator2[0]) + " damage",True,(255,255,255))
+        secondary1Rect = secondary1.get_rect()
+        secondary1Rect.center = (705,350)
+        screen.blit(secondary1, secondary1Rect)
+
+        primary1_cooldown = font.render("Cooldown: " + str(vindicator2[1]//1000) + " seconds", True, (0,255,0))
+        primary1_cooldownRect = primary1_cooldown.get_rect()
+        primary1_cooldownRect.center = (1020,350)
+        screen.blit(primary1_cooldown, primary1_cooldownRect)
+
+        ability = font.render("Ability: Restores 50 Health", True, (255,255,255))
+        ability_Rect = ability.get_rect()
+        ability_Rect.center = (720,400)
+        screen.blit(ability,ability_Rect)
+        primary1_cooldown = font.render("Cooldown: " + str(300000//1000) + " seconds", True, (0,255,0))
+        primary1_cooldownRect = primary1_cooldown.get_rect()
+        primary1_cooldownRect.center = (705,430)
+        screen.blit(primary1_cooldown, primary1_cooldownRect)
+    
+    elif drone_desc_activate[3]:
+        screen.blit(panel, (75,535))
+        
+        name = font_header.render('CHIMERA', True, (255,255,255))
+        nameRect = name.get_rect()
+        nameRect.center = (925, 200)
+        screen.blit(name, nameRect)
+
+        primary1 = font.render("Primary: " + str(chimera1[0]) + " damage",True,(255,255,255))
+        primary1Rect = primary1.get_rect()
+        primary1Rect.center = (675,300)
+        screen.blit(primary1, primary1Rect)
+
+        primary1_cooldown = font.render("Cooldown: " + str(chimera1[1]//1000) + " seconds", True, (0,255,0))
+        primary1_cooldownRect = primary1_cooldown.get_rect()
+        primary1_cooldownRect.center = (960,300)
+        screen.blit(primary1_cooldown, primary1_cooldownRect)
+
+        secondary1 = font.render("Secondary: " + str(chimera2[0]) + " damage",True,(255,255,255))
+        secondary1Rect = secondary1.get_rect()
+        secondary1Rect.center = (705,350)
+        screen.blit(secondary1, secondary1Rect)
+
+        primary1_cooldown = font.render("Cooldown: " + str(chimera2[1]//1000) + " seconds", True, (0,255,0))
+        primary1_cooldownRect = primary1_cooldown.get_rect()
+        primary1_cooldownRect.center = (1020,350)
+        screen.blit(primary1_cooldown, primary1_cooldownRect)
+
+        ability = font.render("Ability: Take half damage for 20 seconds", True, (255,255,255))
+        ability_Rect = ability.get_rect()
+        ability_Rect.center = (815,400)
+        screen.blit(ability,ability_Rect)
+        primary1_cooldown = font.render("Cooldown: " + str(chimera3[1]//1000) + " seconds", True, (0,255,0))
+        primary1_cooldownRect = primary1_cooldown.get_rect()
+        primary1_cooldownRect.center = (700,430)
+        screen.blit(primary1_cooldown, primary1_cooldownRect)
+    
+
+
+
