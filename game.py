@@ -41,13 +41,13 @@ drone_class = "basic"
 main_menu = False
 game_mode_select = False
 player_select = False
-game_start = False
+game_start = True
 font = pygame.font.SysFont('/images/ui/recharge bd.otf', 36)
 font_menu = pygame.font.Font('images/ui/recharge bd.otf',70)
 you_lose = False
 you_win = False
 waiting = False
-drone_select = True
+drone_select = False
 drone_desc_activate = [True, False, False, False, False, False, False, False]
 
 #multiplayer lobby menus
@@ -73,7 +73,7 @@ max_check3 = 0
 max_check2 = 0
 max_check1 = 0
 ch = Character.Character('BASIC')
-ch.change_type(9)
+ch.change_type(1)
 attack_cooldown_1 = 0
 attack_cooldown_2 = 0
 attack_cooldown_3 = 0
@@ -97,8 +97,8 @@ weapon1_audio = audio.SoundEffect('audio/pew.mp3')
 play_button = ui.Button((0,255,0),width/7,height/4,225,350,"play")
 demo_button = ui.Button((0,255,0),width * (2/3),height/4,225,350,"demo")
 settings_button = ui.Button((0,255,0),(width //2) - 120,height-130,220,70,"settings")
-player_1_select = ui.Button((0,255,0),width/7,height - 300,225,225,"Player 1")
-player_2_select = ui.Button((0,255,0),width * (2/3),height - 300,225,225,"Player 2")
+player_1_select = ui.Button((0,255,0),100,300,400,245,"Player 1")
+player_2_select = ui.Button((0,255,0),800,300,400,245,"Player 2")
 
 drone_one_button = ui.Button((0,255,0),75,175,110,110,"1")
 drone_two_button = ui.Button((0,255,0),75,295,110,110,"2")
@@ -108,6 +108,7 @@ drone_five_button = ui.Button((0,255,0),215,175,110,110,"5")
 drone_six_button = ui.Button((0,255,0),215,295,110,110,"6")
 drone_seven_button = ui.Button((0,255,0),215,415,110,110,"7")
 drone_eight_button = ui.Button((0,255,0),215,535,110,110,"8")
+drone_select_button = ui.Button((0,255,0),700,500,350,75,"select")
 #initalize opencv
 #vc = cv2.VideoCapture(0,cv2.CAP_DSHOW) #windows
 vc = cv2.VideoCapture(0) #macos
@@ -119,7 +120,6 @@ pink_detection = vision.Vision(rval,vc,frame,height,width)
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 client.connect(('192.168.1.10', 49152))
 #client.connect(('127.0.0.1', 49152))
-
 def receive():
     global health
     global enemy_health
@@ -282,42 +282,25 @@ while True:
         #drone_six_button.draw(screen)
         #drone_seven_button.draw(screen)
         #drone_eight_button.draw(screen)
+        #drone_select_button.draw(screen)
 
     #player select menu
     if player_select:
-        display_menu("images/player_select.png")
+        #display_menu("images/player_select.png")
+        display_menu("images/drone_select_image.png")
+        ui.display_player_selection_menu(screen,width,height)
         #player_1_select = ui.Button((0,255,0),width/7,height - 300,225,225,"Player 1")
         #player_2_select = ui.Button((0,255,0),width * (2/3),height - 300,225,225,"Player 2")
-        player_1_select.draw(screen)
-        player_2_select.draw(screen)
+        #player_1_select.draw(screen)
+        #player_2_select.draw(screen)
     
-    #multiplayer lobby menus
-    if multiplayer_lobby:
-        display_menu("images/Multiplayer Lobby/lobby.png")
-        #host_button = ui.Button((0,255,0),width/7,height/4,225,350,"host")
-        host_button.draw(screen)
-        #join_button = ui.Button((0,255,0),width * (2/3),height/4,225,350,"join")
-        join_button.draw(screen)
-    
-    if host_lobby:
-        display_menu("images/Multiplayer Lobby/Host.png")
-        ip = ui.Text(width/2,height/2,100,100,socket.gethostbyname(socket.gethostname()))
-        ip.draw(screen,100)
-
-        port = font.render(port_add, 1, (0, 0, 0))
-        screen.blit(port,(width * (8/10),height * (9/10)))
-
-    if join_lobby:
-        display_menu("images/Multiplayer Lobby/Join.png")
-
-        ip = font.render(ip_add, 1, (0, 0, 0))
-        screen.blit(ip,(width/6,height * (6/10)))
-
-        port = font.render(port_add, 1, (0, 0, 0))
-        screen.blit(port,(width * (8/10),height * (6/10)))
-
     if waiting:
-        display_menu("images/waiting.png")
+        display_menu("images/drone_select_image.png")
+        font_header = pygame.font.Font('images/ui/recharge bd.otf', 50)
+        text = font_header.render('WAITING FOR OTHER PLAYER...', True, (255,255,255))
+        textRect = text.get_rect()
+        textRect.center = (width // 2, height//2)
+        screen.blit(text, textRect)
     
 
     #health checker
@@ -415,35 +398,73 @@ while True:
             if drone_one_button.isOver(event):
                 drone_desc_activate = [False, False, False, False, False, False, False, False]
                 drone_desc_activate[0] = True
+                ch.change_type(2)
             elif drone_two_button.isOver(event):
                 drone_desc_activate = [False, False, False, False, False, False, False, False]
                 drone_desc_activate[1] = True
+                ch.change_type(3)
             elif drone_three_button.isOver(event):
                 drone_desc_activate = [False, False, False, False, False, False, False, False]
                 drone_desc_activate[2] = True
+                ch.change_type(4)
             elif drone_four_button.isOver(event):
                 drone_desc_activate = [False, False, False, False, False, False, False, False]
                 drone_desc_activate[3] = True
+                ch.change_type(5)
             elif drone_five_button.isOver(event):
                 drone_desc_activate = [False, False, False, False, False, False, False, False]
                 drone_desc_activate[4] = True
+                ch.change_type(6)
             elif drone_six_button.isOver(event):
                 drone_desc_activate = [False, False, False, False, False, False, False, False]
                 drone_desc_activate[5] = True
+                ch.change_type(7)
             elif drone_seven_button.isOver(event):
                 drone_desc_activate = [False, False, False, False, False, False, False, False]
                 drone_desc_activate[6] = True
+                ch.change_type(8)
             elif drone_eight_button.isOver(event):
                 drone_desc_activate = [False, False, False, False, False, False, False, False]
                 drone_desc_activate[7] = True
+                ch.change_type(9)
+            elif drone_select_button.isOver(event):
+                drone_select = False
+                player_select = True
         
         elif main_menu:
             main_menu = False
             game_mode_select = True
         
         elif game_start:  
+            if you_lose or you_win:
+                #restart
+                if player_1_select.isOver(event):
+                    you_lose = False
+                    you_win = False
+                    health = 100
+                    enemy_health = 100
+                    attack_cooldown_1 = 0
+                    attack_cooldown_2 = 0
+                    attack_cooldown_3 = 0
+                
+                #main menu button
+                if player_2_select.isOver(event):
+                    you_lose = False
+                    you_win = False
+                    health = 100
+                    enemy_health = 100
+                    attack_cooldown_1 = 0
+                    attack_cooldown_2 = 0
+                    attack_cooldown_3 = 0
+                    game_start = False
+                    pygame.mixer.music.stop()
+                    main_music.play_on_loop()
+                    game_audio = True
+                    game_mode_select = True
+
+            
             #attack 1
-            if fire_button1.isOver(event):
+            elif fire_button1.isOver(event):
                 #hit detection
                 weapon1_audio.play()
                 if pink_detection.is_detected() and attack_cooldown_1 <= pygame.time.get_ticks(): 
@@ -457,8 +478,7 @@ while True:
                     hit = True
                     if enemy_health <= 0:
                         you_win = True
-                    
-            
+
             #attack 2
             elif fire_button2.isOver(event):
                 #hit detection
@@ -633,10 +653,20 @@ while True:
 
         ##game over screen##
         if you_lose or you_win:
+            display_menu("images/ui/cloud.png")
+            ui.display_conclusion_menu(screen,width,height)
+            font_header = pygame.font.Font('images/ui/recharge bd.otf', 120)
             if you_win:
-                display_menu("images/you_win.png")
+                text = font_header.render('YOU WIN!', True, (0,0,0))
+                textRect = text.get_rect()
+                textRect.center = (width // 2, 100)
+                screen.blit(text, textRect)
             elif you_lose:
-                display_menu("images/game_over.png")
+                text = font_header.render('YOU LOSE!', True, (0,0,0))
+                textRect = text.get_rect()
+                textRect.center = (width // 2, 100)
+                screen.blit(text, textRect)
+                
 
     rval, frame = vc.read()
     pygame.display.flip()

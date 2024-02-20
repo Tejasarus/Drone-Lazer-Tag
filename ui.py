@@ -148,3 +148,54 @@ def drone_selection_menu(screen, font_menu, width, height):
     screen.blit(drone8, (205,525))
 
 
+def display_player_selection_menu(screen, width, height):
+    font = pygame.font.Font('images/ui/neuropol.otf', 45)
+    font_header = pygame.font.Font('images/ui/recharge bd.otf', 90)
+
+    text = font_header.render('PLAYER 1 OR 2?', True, (255,255,255))
+    textRect = text.get_rect()
+    textRect.center = (width // 2, 70)
+    screen.blit(text, textRect)
+
+    scale_factor = 2.5
+    panel1 = pygame.image.load("images/ui/glassPanel_cornerBL.png").convert_alpha()
+    panel1 = pygame.transform.scale(panel1,(panel1.get_width() * scale_factor * 1.5, panel1.get_height() * scale_factor))
+    screen.blit(panel1, (100,300))
+
+    panel2 = pygame.image.load("images/ui/glassPanel_cornerTR.png").convert_alpha()
+    panel2 = pygame.transform.scale(panel2,(panel2.get_width() * scale_factor * 1.5, panel2.get_height() * scale_factor))
+    screen.blit(panel2, (800,300))
+
+    player_1_text = font.render('PLAYER 1', True, (255,255,255))
+    nameRect = player_1_text.get_rect()
+    nameRect.center = (285, 425)
+    screen.blit(player_1_text, nameRect)
+
+    player_2_text = font.render('PLAYER 2', True, (255,255,255))
+    nameRect = player_2_text.get_rect()
+    nameRect.center = (985, 425)
+    screen.blit(player_2_text, nameRect)
+
+def display_conclusion_menu(screen, width, height):
+    
+    font = pygame.font.Font('images/ui/neuropol.otf', 45)
+    font_header = pygame.font.Font('images/ui/recharge bd.otf', 90)
+
+    scale_factor = 2.5
+    panel1 = pygame.image.load("images/ui/glassPanel_cornerBL.png").convert_alpha()
+    panel1 = pygame.transform.scale(panel1,(panel1.get_width() * scale_factor * 1.5, panel1.get_height() * scale_factor))
+    screen.blit(panel1, (100,300))
+
+    panel2 = pygame.image.load("images/ui/glassPanel_cornerTR.png").convert_alpha()
+    panel2 = pygame.transform.scale(panel2,(panel2.get_width() * scale_factor * 1.5, panel2.get_height() * scale_factor))
+    screen.blit(panel2, (800,300))
+
+    player_1_text = font.render('REPLAY', True, (0,0,0))
+    nameRect = player_1_text.get_rect()
+    nameRect.center = (285, 425)
+    screen.blit(player_1_text, nameRect)
+
+    player_2_text = font.render('MENU', True, (0,0,0))
+    nameRect = player_2_text.get_rect()
+    nameRect.center = (985, 425)
+    screen.blit(player_2_text, nameRect)
