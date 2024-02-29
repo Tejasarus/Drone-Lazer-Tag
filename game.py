@@ -9,7 +9,8 @@ import audio
 import sys
 sys.path.append('drone types/')
 import Character
-
+import serial
+ser = serial.Serial('/dev/cu.usbmodem11401',9600)
 
 #pygame initalization
 pygame.init()
@@ -38,10 +39,10 @@ foehn_wind = False
 drone_class = "basic"
 
 #menu game variables
-main_menu = False
+main_menu = True
 game_mode_select = False
 player_select = False
-game_start = True
+game_start = False
 font = pygame.font.SysFont('/images/ui/recharge bd.otf', 36)
 font_menu = pygame.font.Font('images/ui/recharge bd.otf',70)
 you_lose = False
@@ -67,7 +68,7 @@ dam_re = False
 wyver = False
 damage_done = 0
 poison_damage = 10
-
+controller_button = ""
 #character stats and checks
 max_check3 = 0
 max_check2 = 0
@@ -118,8 +119,10 @@ rval, frame = vc.read()
 pink_detection = vision.Vision(rval,vc,frame,height,width)
 
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-client.connect(('192.168.1.10', 49152))
-#client.connect(('127.0.0.1', 49152))
+#client.connect(('192.168.1.10', 49152))
+client.connect(('127.0.0.1', 49152))
+#client.connect(('192.168.1.41', 49152))
+
 def receive():
     global health
     global enemy_health
@@ -234,6 +237,61 @@ def receive():
             client.close()
             break
 
+def attack1():
+    global attack_cooldown_1
+    global enemy_health
+    global health
+    global you_win
+
+    weapon1_audio.play()
+    if pink_detection.is_detected() and attack_cooldown_1 <= pygame.time.get_ticks(): 
+        print("hit!")
+        message = ch.attack1(p1)
+        client.send(message.encode('ascii'))
+        attack_damage = ch.return_attack_damage(message)
+        enemy_health = enemy_health - attack_damage[0]
+        damage_done = attack_damage[0]
+        attack_cooldown_1 = pygame.time.get_ticks() + attack_damage[1]
+        hit = True
+        if enemy_health <= 0:
+            you_win = True
+
+def attack2():
+    global attack_cooldown_2
+    global enemy_health
+    global health
+    global you_win
+
+    weapon1_audio.play()
+    if pink_detection.is_detected() and attack_cooldown_2 <= pygame.time.get_ticks(): 
+        print("hit!")
+        message = ch.attack2(p1)
+        client.send(message.encode('ascii'))
+        attack_damage = ch.return_attack_damage(message)
+        enemy_health = enemy_health - attack_damage[0]
+        damage_done = attack_damage[0]
+        attack_cooldown_2 = pygame.time.get_ticks() + attack_damage[1]
+        hit = True
+        if enemy_health <= 0:
+            you_win = True
+
+def attack3():
+    global attack_cooldown_3
+    global enemy_health
+    global health
+    global you_win
+    
+    weapon1_audio.play()
+    if attack_cooldown_3 <= pygame.time.get_ticks(): 
+        print("hit!")
+        message = ch.attack3(p1)
+        client.send(message.encode('ascii'))
+        attack_damage = ch.return_attack_damage(message)
+        #enemy_health = enemy_health - attack_damage[0]
+        attack_cooldown_3 = pygame.time.get_ticks() + attack_damage[1]
+        if enemy_health <= 0:
+            you_win = True
+
 def display_menu(image):
     img = pygame.image.load(image).convert()
     img = pygame.transform.scale(img, (width,height))
@@ -241,6 +299,19 @@ def display_menu(image):
 
 receive_thread = threading.Thread(target=receive)
 receive_thread.start()
+
+
+def read_serial():
+    global controller_button
+    while True:
+        serial_data = ser.readline().decode('utf-8', errors='replace').strip()
+        controller_button = serial_data
+        
+
+
+serial_thread = threading.Thread(target=read_serial)
+serial_thread.daemon = True
+serial_thread.start()
 
 while True:
     click = False
@@ -316,6 +387,8 @@ while True:
     frame = np.fliplr(frame)
     frame = np.rot90(frame)
     frame = cv2.cvtColor(frame, cv2.COLOR_RGB2BGR)
+    #print(frame.size())
+    frame = cv2.resize(frame, (720, 1280))
     surf = pygame.surfarray.make_surface(frame)
     
     for event in pygame.event.get():
@@ -515,6 +588,19 @@ while True:
         pygame.display.update()
 
     if game_start:
+        #controller_button = controller.button_pressed()
+        #print(controller_button)
+        if controller_button == "button1":
+            attack1()
+            controller_button = ""
+        if controller_button == "button2":
+            attack2()
+            controller_button = ""
+        if controller_button == "button3":
+            attack3()
+            controller_button = ""
+        
+        
         curr_time = pygame.time.get_ticks()
 
         screen.blit(surf, (0,0))
@@ -567,13 +653,13 @@ while True:
 
         #draw fire button
         fire_button1 = ui.Button((0,0,255),(width - 300) // 2,height-50,50,50,"1!")
-        fire_button1.draw(screen)
+        #fire_button1.draw(screen)
 
         fire_button2 = ui.Button((0,255,0),(width - 200) // 2,height-50,50,50,"2!")
-        fire_button2.draw(screen)
+        #fire_button2.draw(screen)
 
         fire_button3 = ui.Button((0,255,255),(width + 100) // 2,height-50,50,50,"3!")
-        fire_button3.draw(screen)
+        #fire_button3.draw(screen)
         #draw health bars
         ui.draw_health_bar(health, enemy_health,screen)
 
