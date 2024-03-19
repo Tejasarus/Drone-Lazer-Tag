@@ -4,6 +4,18 @@ This is the code for my senior design project, Fight Flight which is drones play
 # Video
 [Demo Video](https://www.youtube.com/watch?v=ew4bn0MpUDc)
 
+# Code/Files Overview for TA grading this (hi! :wave:)
+- `game.py`: The main script to play the game. Controls UI, player health, controller button readings from Arduino controllers, and communications between players via the server.
+- `vision.py`: Does the computer vision detection of the drones. `game.py` will refer to this when the player attempts to shoot an opposing drone.
+- `audio.py`: Contains classes to control the various audio effects in the game.
+- `server.py`: Serves as the bridge for communication between players. Sends data between the players to communicate health status, attacks, abilities, and connections/disconnections.
+- `ui.py`: Contains helper classes and functions to draw various menus and declutter `game.py`.
+- `/drone types/Character.py`: Implementation of the 8 different drone classes, with their unique attack stats and abilities.
+- `controller.ino`: Arduino code for the custom controller
+- `/test and reference`: Contains the initial code for `vision.py` and `server.py`.
+- `/images`: Contains all of the UI elements used in the game
+- `/audio`: Contains all of the audio elements used in the game
+
 # Set Up and Running
 1) Install the following Python libraries
 - [ ] Pygame
